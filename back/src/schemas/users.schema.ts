@@ -18,4 +18,10 @@ const userSchemaResponse = userSchema.omit({
   password: true,
 });
 
-export { userSchema, userSchemaRequest, userSchemaResponse };
+const multipleUsersSchemaResponse = z.array(userSchemaResponse);
+
+const userSchemaUpdate = userSchema.omit({
+  id: true
+}).partial()
+
+export { userSchema, userSchemaRequest, userSchemaResponse, multipleUsersSchemaResponse, userSchemaUpdate };

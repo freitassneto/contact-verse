@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { TUserRequest } from "../interfaces/users.interfaces";
+import { TUserRequest, TUsersResponse } from "../interfaces/users.interfaces";
 import { createUserService } from "../services/users/createUser.service";
+import { listusersService } from "../services/users/listUsers.service";
 
 const createUserController = async (req: Request, res: Response): Promise<Response> => {
   const { fullname, email, password, phone }: TUserRequest = req.body;
@@ -9,4 +10,10 @@ const createUserController = async (req: Request, res: Response): Promise<Respon
   return res.status(201).json(newUser);
 };
 
-export { createUserController };
+const listUsersController = async (req: Request, res: Response): Promise<Response> => {
+  const users: TUsersResponse = await listusersService();
+
+  return res.status(200).json(users);
+}
+
+export { createUserController, listUsersController };
