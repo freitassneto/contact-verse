@@ -22,7 +22,7 @@ const handleErrors = ( err: any, req: Request, res: Response, _: NextFunction) =
   console.log(err);
 
   return res.status(500).json({
-    message: "Internal server error",
+    message: `Internal server error: ${err.message}`,
   });
 };
 
