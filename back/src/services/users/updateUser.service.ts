@@ -5,14 +5,12 @@ import { AppError } from "../../errors";
 import { TUserResponse, TUserUpdate } from "../../interfaces/users.interfaces";
 import { userSchemaResponse } from "../../schemas/users.schema";
 
-const updateUserService = async (userId: number, newUserData: TUserUpdate): Promise<TUserResponse> => {
+const updateUserService = async (newUserData: TUserUpdate, userId: number): Promise<TUserResponse> => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
-  const oldUserData: User | null = await userRepository.findOneBy({
-    id: userId,
-  });
+  const oldUserData: User | null = await userRepository.findOneBy({ id: userId });
 
-  const newUser = userRepository.create({
+  const newUser: User = userRepository.create({
     ...oldUserData,
     ...newUserData,
   });
