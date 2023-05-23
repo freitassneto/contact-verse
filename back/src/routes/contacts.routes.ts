@@ -6,7 +6,6 @@ import {
   updateContactController,
 } from "../controllers/contacts.controller";
 
-
 const contactsRoutes: Router = Router();
 
 contactsRoutes.post("", createContactController);
