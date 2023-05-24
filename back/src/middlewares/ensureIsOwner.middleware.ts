@@ -12,7 +12,7 @@ const ensureIsOwnerMiddleware = async (
     AppDataSource.getRepository(Contact);
 
   const contactId: number = Number(req.params.id);
-  const userId: number = res.locals.userId;
+  const userId: number = Number(res.locals.userId);
 
   const contact = await contactsRepository.findOne({
     where: {

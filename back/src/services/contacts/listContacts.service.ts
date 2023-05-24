@@ -20,13 +20,14 @@ const listContactsService = async (
   if (!user) {
     throw new AppError("User not found", 401);
   }
-
   const contacts: Contact[] = await contactsRepository.find({
     where: {
-      user: user,
+      user: {
+        id: userId
+      }
     },
   });
-
+  
   return contactsSchemaResponse.parse(contacts);
 };
 
