@@ -1,7 +1,9 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { LoginData } from "../pages/Login/validator";
 import { api } from "../services/api";
+import { toast } from "react-toastify";
+import { RegisterData } from "../pages/Register/validator";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -10,6 +12,8 @@ interface AuthProviderProps {
 interface AuthContextValues {
   signIn: (data: LoginData) => void;
   loading: boolean;
+  registerUser: (data: RegisterData) => void;
+  logout: () => void;
 }
 
 export const AuthContext = createContext<AuthContextValues>(
@@ -34,7 +38,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signIn = async (data: LoginData) => {
     try {
+      setLoading(true);
       const response = await api.post("/login", data);
+
+      toast.success("Login efetuado!");
 
       const { token } = response.data;
 
@@ -44,11 +51,34 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       navigate("dashboard");
     } catch (error) {
       console.error(error);
+      toast.error("E-mail ou senha incorretos!");
+    } finally {
+      setLoading(false);
+      <Navigate to="/dashboard" />;
     }
   };
 
+  const registerUser = async (data: RegisterData) => {
+    try {
+      setLoading(true);
+      await api.post("/users", data);
+      toast.success("Cadastro feito com sucesso!");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      toast.error("Desculpe, algo deu errado!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem("ContactNet:token");
+    navigate("/");
+  };
+
   return (
-    <AuthContext.Provider value={{ signIn, loading }}>
+    <AuthContext.Provider value={{ signIn, loading, registerUser, logout }}>
       {children}
     </AuthContext.Provider>
   );
