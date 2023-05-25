@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("ContactNet:token");
+    const token = localStorage.getItem("@ContactVerse:token");
 
     if (!token) {
       setLoading(false);
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const { token } = response.data;
 
       api.defaults.headers.common.authorization = `Bearer ${token}`;
-      localStorage.setItem("ContactNet:token", token);
+      localStorage.setItem("@ContactVerse:token", token);
 
       navigate("dashboard");
     } catch (error) {
@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("ContactNet:token");
+    localStorage.removeItem("@ContactVerse:token");
     navigate("/");
   };
 
