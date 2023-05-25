@@ -2,6 +2,9 @@ import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
    :root {
+     --color-green: #00FF43;
+     --color-black: #000000;
+     --color-white: #FFFFFF;
     --color-blue-900: #0d47a1;
     --color-blue-800: #1565c0;
     --color-blue-700: #1976d2;
@@ -11,6 +14,11 @@ export default createGlobalStyle`
     --color-blue-300: #64b5f6;
     --color-blue-200: #90caf9;
     --color-blue-100: #bbdefb;
+    --color-green-900: #004011;
+    --color-green-800: #008022;
+    --color-green-700: #26803E;
+    --color-green-600: #00CC36;
+    --color-green-400: #4DFF7C;
     --color-gray-900: #212121;
     --color-gray-800: #424242;
     --color-gray-700: #616161;
