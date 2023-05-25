@@ -6,14 +6,14 @@ export const Container = styled.div`
   height: 100vh;
 
   header {
-    background-color: var(--color-blue-700);
+    background-color: var(--color-green-700);
     display: flex;
     justify-content: space-around;
   }
 `;
 
 export const ContactList = styled.ul`
-  background-color: var(--color-blue-400);
+  background-color: var(--color-green);
   height: 100vh;
   width: 300px;
   list-style: none;
