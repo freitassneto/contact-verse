@@ -15,7 +15,7 @@ class Contact {
   @Column({ length: 95 })
   fullname: string;
 
-  @Column({ length: 45, unique: true })
+  @Column({ length: 45 })
   email: string;
 
   @Column({ length: 11 })
