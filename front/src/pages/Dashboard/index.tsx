@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
+import { ContactList, Container } from "./styles";
+import { Card } from "../../components/Card";
+import { ModalAddContact } from "../../components/ModalAddContact";
 
-interface Contact {
+export interface Contact {
   id: number;
   fullname: string;
   email: string;
@@ -10,6 +13,7 @@ interface Contact {
 
 export const Dashboard = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -18,18 +22,28 @@ export const Dashboard = () => {
     })();
   }, []);
 
+  const toggleModal = () => setIsOpenModal(!isOpenModal);
+
   return (
-    <>
-      <h1>Dashboard</h1>
-      <ul>
-        {contacts.map((contact) => (
-          <li key={contact.id}>
-            <h3>{contact.fullname}</h3>
-            <p>{contact.email}</p>
-            <p>{contact.phone}</p>
-          </li>
-        ))}
-      </ul>
-    </>
+    <Container>
+      <header>
+        <h1>ContactNet</h1>
+        <button type="button" onClick={toggleModal}>
+          New
+        </button>
+      </header>
+
+      {isOpenModal && (
+        <ModalAddContact toggleModal={toggleModal} setContacts={setContacts} />
+      )}
+
+      <main>
+        <ContactList>
+          {contacts.map((contact) => (
+            <Card key={contact.id} contact={contact} />
+          ))}
+        </ContactList>
+      </main>
+    </Container>
   );
 };
