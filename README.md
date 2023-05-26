@@ -75,3 +75,18 @@ npm run dev
 # caso use yarn
 yarn dev
 ```
+
+<div align="center">
+    <h2>
+    Rodando e visualizando a documentação do projeto
+    </h2>
+    <p>Para visualizar a documentação, acesse a pasta /documentation através do seu terminal e digite o comando</p>
+</div>
+
+```bash
+# acessando a pasta da documentação
+cd documentation
+
+# rode o comando abaixo e acesse o endpoint para visualizar a documentação
+npx serve
+```
