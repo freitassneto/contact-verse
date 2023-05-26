@@ -59,7 +59,7 @@ export default createGlobalStyle`
   }
 
   body, input, button, textarea {
-    font-family: 'Inter';
+    font-family: Open-Sans, Helvetica, Sans-Serif;
     font-size: 1.6rem;
   }
 
