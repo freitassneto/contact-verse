@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
 export const Container = styled.li`
-    width: 250px;
+    width: 300px;
     height: 100px;
+    padding: 20px;
+    
     background-color: var(--color-gray-300);
     color: var(--color-gray-900);
-
-    margin: 10px;
+    border-radius: 4px;
 `
