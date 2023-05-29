@@ -3,6 +3,11 @@ import { api } from "../../services/api";
 import { ContactList, Container } from "./styles";
 import { Card } from "../../components/Card";
 import { ModalAddContact } from "../../components/ModalAddContact";
+import { HiUserAdd } from "react-icons/hi";
+import headerLogo from "../../assets/logo-header-contactverse.png";
+import { ImProfile } from "react-icons/im";
+import { TbLogout } from "react-icons/tb";
+import { useAuth } from "../../hooks/useAuth";
 
 export interface Contact {
   id: number;
@@ -12,6 +17,7 @@ export interface Contact {
 }
 
 export const Dashboard = () => {
+  const { logout } = useAuth();
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
 
@@ -27,10 +33,20 @@ export const Dashboard = () => {
   return (
     <Container>
       <header>
-        <h1>ContactNet</h1>
-        <button type="button" onClick={toggleModal}>
-          New
-        </button>
+        <div>
+          <img src={headerLogo} alt="" />
+        </div>
+        <div>
+          <button type="button" onClick={toggleModal}>
+            <HiUserAdd />
+          </button>
+          <button type="button" onClick={toggleModal}>
+            <ImProfile />
+          </button>
+          <button type="button" onClick={logout}>
+            <TbLogout />
+          </button>
+        </div>
       </header>
 
       {isOpenModal && (

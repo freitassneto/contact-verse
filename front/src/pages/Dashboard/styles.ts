@@ -6,15 +6,20 @@ export const Container = styled.div`
   height: 100vh;
 
   header {
-    background-color: var(--color-green-700);
+    background-color: var(--color-green);
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
   }
 `;
 
 export const ContactList = styled.ul`
-  background-color: var(--color-green);
-  height: 100vh;
-  width: 300px;
+  margin: 0 auto;
+  width: 80%;
   list-style: none;
+  padding-top: 2rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
 `;
