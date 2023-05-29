@@ -11,9 +11,18 @@ interface CardProps {
 export const Card = ({ contact }: CardProps) => {
   return (
     <Container>
-      <h3><IoMdContact />{contact.fullname}</h3>
-      <p><IoMailOpen />{contact.email}</p>
-      <p><AiFillPhone />{contact.phone}</p>
+      <div>
+        <IoMdContact />
+        <h3>{contact.fullname}</h3>
+      </div>
+      <div>
+        <IoMailOpen />
+        <p>{contact.email}</p>
+      </div>
+      <div>
+        <AiFillPhone />
+        <p>{contact.phone}</p>
+      </div>
     </Container>
   );
 };
