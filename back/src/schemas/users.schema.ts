@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { contactsSchemaResponse } from "./contacts.schemas";
 
 const userSchema = z.object({
   id: z.number(),
@@ -7,11 +8,13 @@ const userSchema = z.object({
   password: z.string().min(4).max(20),
   phone: z.string().max(11),
   createdAt: z.date().or(z.string()),
+  contacts: contactsSchemaResponse.optional(),
 });
 
 const userSchemaRequest = userSchema.omit({
   id: true,
   createdAt: true,
+  contacts: true,
 });
 
 const userSchemaResponse = userSchema.omit({
@@ -20,8 +23,16 @@ const userSchemaResponse = userSchema.omit({
 
 const multipleUsersSchemaResponse = z.array(userSchemaResponse);
 
-const userSchemaUpdate = userSchema.omit({
-  id: true
-}).partial()
+const userSchemaUpdate = userSchema
+  .omit({
+    id: true,
+  })
+  .partial();
 
-export { userSchema, userSchemaRequest, userSchemaResponse, multipleUsersSchemaResponse, userSchemaUpdate };
+export {
+  userSchema,
+  userSchemaRequest,
+  userSchemaResponse,
+  multipleUsersSchemaResponse,
+  userSchemaUpdate,
+};
