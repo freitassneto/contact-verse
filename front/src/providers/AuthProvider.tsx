@@ -4,6 +4,7 @@ import { LoginData } from "../pages/Login/validator";
 import { api } from "../services/api";
 import { toast } from "react-toastify";
 import { RegisterData } from "../pages/Register/validator";
+import { UserData } from "../pages/Dashboard";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -14,6 +15,7 @@ interface AuthContextValues {
   loading: boolean;
   registerUser: (data: RegisterData) => void;
   logout: () => void;
+  user: UserData | null;
 }
 
 export const AuthContext = createContext<AuthContextValues>(
@@ -23,17 +25,33 @@ export const AuthContext = createContext<AuthContextValues>(
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<UserData | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("@ContactVerse:token");
+    const validateUser = async () => {
+      const token = localStorage.getItem("@ContactVerse:token");
 
-    if (!token) {
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await api.get(`/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setUser(response.data)
+
+      } catch (error) {
+        console.error(error);
+      }
+
+      api.defaults.headers.common.authorization = `Bearer ${token}`;
       setLoading(false);
-      return;
-    }
-
-    api.defaults.headers.common.authorization = `Bearer ${token}`;
-    setLoading(false);
+    };
+    validateUser();
   }, []);
 
   const signIn = async (data: LoginData) => {
@@ -78,7 +96,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   return (
-    <AuthContext.Provider value={{ signIn, loading, registerUser, logout }}>
+    <AuthContext.Provider
+      value={{ signIn, loading, registerUser, logout, user }}
+    >
       {children}
     </AuthContext.Provider>
   );
