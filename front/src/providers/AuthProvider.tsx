@@ -16,6 +16,8 @@ interface AuthContextValues {
   registerUser: (data: RegisterData) => void;
   logout: () => void;
   user: UserData | null;
+  editUser: (userEditedData: UserData) => Promise<void>;
+  deleteUser: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextValues>(
@@ -39,11 +41,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       try {
         const response = await api.get(`/users`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
-        setUser(response.data)
-
+        setUser(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -90,6 +91,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const editUser = async (userEditedData: UserData) => {
+    try {
+      const response = await api.patch("/users", userEditedData);
+      setUser(response.data);
+      toast.success("Dados do usuário atualizados.");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteUser = async () => {
+    try {
+      await api.delete("/users");
+      toast.success("Usuário deletado com sucesso!");
+      logout();
+    } catch (error) {
+      console.log(error);
+      toast.warn("Não conseguimos deletar o usuário");
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("@ContactVerse:token");
     navigate("/");
@@ -97,7 +119,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   return (
     <AuthContext.Provider
-      value={{ signIn, loading, registerUser, logout, user }}
+      value={{ signIn, loading, registerUser, logout, user, editUser, deleteUser }}
     >
       {children}
     </AuthContext.Provider>
