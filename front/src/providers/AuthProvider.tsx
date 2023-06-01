@@ -4,6 +4,7 @@ import { LoginData } from "../pages/Login/validator";
 import { api } from "../services/api";
 import { toast } from "react-toastify";
 import { RegisterData } from "../pages/Register/validator";
+import { UserData } from "../pages/Dashboard";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -14,6 +15,9 @@ interface AuthContextValues {
   loading: boolean;
   registerUser: (data: RegisterData) => void;
   logout: () => void;
+  user: UserData | null;
+  editUser: (userEditedData: UserData) => Promise<void>;
+  deleteUser: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextValues>(
@@ -23,17 +27,32 @@ export const AuthContext = createContext<AuthContextValues>(
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<UserData | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("@ContactVerse:token");
+    const validateUser = async () => {
+      const token = localStorage.getItem("@ContactVerse:token");
 
-    if (!token) {
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await api.get(`/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+
+      api.defaults.headers.common.authorization = `Bearer ${token}`;
       setLoading(false);
-      return;
-    }
-
-    api.defaults.headers.common.authorization = `Bearer ${token}`;
-    setLoading(false);
+    };
+    validateUser();
   }, []);
 
   const signIn = async (data: LoginData) => {
@@ -72,13 +91,36 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const editUser = async (userEditedData: UserData) => {
+    try {
+      const response = await api.patch("/users", userEditedData);
+      setUser(response.data);
+      toast.success("Dados do usuário atualizados.");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteUser = async () => {
+    try {
+      await api.delete("/users");
+      toast.success("Usuário deletado com sucesso!");
+      logout();
+    } catch (error) {
+      console.log(error);
+      toast.warn("Não conseguimos deletar o usuário");
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("@ContactVerse:token");
     navigate("/");
   };
 
   return (
-    <AuthContext.Provider value={{ signIn, loading, registerUser, logout }}>
+    <AuthContext.Provider
+      value={{ signIn, loading, registerUser, logout, user, editUser, deleteUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

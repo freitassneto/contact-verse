@@ -44,6 +44,22 @@ yarn
 
 <div align="center">
     <h2>
+    Aplicar as migrações e gerar tabelas
+    </h2>
+    <p>Para gerar as tabelas com o TypeORM, é necessário utilizar o comando abaixo:</p>
+</div>
+
+```bash
+Na pasta do frontend:
+# caso use npm
+npm run typeorm migration:run -- -d ./src/data-source.ts
+
+# caso use yarn
+yarn typeorm migration:run -d ./src/data-source.ts
+```
+
+<div align="center">
+    <h2>
     Rodando a aplicação localmente
     </h2>
     <p>Para rodar a aplicação localmente, também se faz necessário acessar a pasta de cada uma e utilizar o comando abaixo:</p>
