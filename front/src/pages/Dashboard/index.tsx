@@ -10,6 +10,7 @@ import { TbLogout } from "react-icons/tb";
 import { useAuth } from "../../hooks/useAuth";
 import { ModalEditUser } from "../../components/ModalEditUser/indext";
 import { AiTwotoneEdit } from "react-icons/ai";
+import { ModalDeleteUser } from "../../components/ModalDeleteUser";
 
 export interface Contact {
   id: number;
@@ -52,11 +53,10 @@ export const Dashboard = () => {
           <div>
             <img src={headerLogo} alt="" />
           </div>
-          <div>
+          <div className="headerButtons">
             <button type="button" onClick={toggleModal}>
               <HiUserAdd />
             </button>
-
             <button type="button" onClick={logout}>
               <TbLogout />
             </button>
@@ -72,6 +72,9 @@ export const Dashboard = () => {
         )}
         {isOpenProfileModal && (
           <ModalEditUser toggleProfileModal={toggleProfileModal} />
+        )}
+        {isOpenDeleteModal && (
+          <ModalDeleteUser toggleDeleteModal={toggleDeleteModal} />
         )}
         <main>
           <UserInfo>

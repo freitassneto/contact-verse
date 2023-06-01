@@ -20,9 +20,39 @@ export const DashHeader = styled.header`
     width: 90%;
     max-width: 1000px;
     margin: 0 auto;
+    padding: 10px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    > div {
+      img {
+        height: 60px;
+      }
+    }
+  }
+
+  .headerButtons {
+    display: flex;
+    gap: 1rem;
+
+    button {
+      padding: 10px 40px;
+      border-radius: 8px;
+      border: 1px solid var(--color-white);
+      background-color: var(--color-white);
+
+      font-size: 2rem;
+      color: var(--color-gray-900);
+
+      transition: 0.5s ease;
+    }
+
+    button:hover {
+      transition: 0.5s ease;
+      border: 1px solid var(--color-gray-700);
+      scale: 1.1;
+    }
   }
 `;
 
@@ -83,6 +113,7 @@ export const UserInfo = styled.div`
     .deleteButton:hover {
       background-color: transparent;
       border: 2px solid var(--color-red);
+      color: var(--color-red);
     }
   }
 `;

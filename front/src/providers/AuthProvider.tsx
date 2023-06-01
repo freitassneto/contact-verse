@@ -17,6 +17,7 @@ interface AuthContextValues {
   logout: () => void;
   user: UserData | null;
   editUser: (userEditedData: UserData) => Promise<void>;
+  deleteUser: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextValues>(
@@ -90,13 +91,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  const editUser = async ( userEditedData: UserData) => {
+  const editUser = async (userEditedData: UserData) => {
     try {
       const response = await api.patch("/users", userEditedData);
       setUser(response.data);
       toast.success("Dados do usuário atualizados.");
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const deleteUser = async () => {
+    try {
+      await api.delete("/users");
+      toast.success("Usuário deletado com sucesso!");
+      logout();
+    } catch (error) {
+      console.log(error);
+      toast.warn("Não conseguimos deletar o usuário");
     }
   };
 
@@ -107,7 +119,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   return (
     <AuthContext.Provider
-      value={{ signIn, loading, registerUser, logout, user, editUser }}
+      value={{ signIn, loading, registerUser, logout, user, editUser, deleteUser }}
     >
       {children}
     </AuthContext.Provider>
